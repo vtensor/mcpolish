@@ -1,0 +1,69 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+MANIFEST
+
+# --- Build artifacts ---
+build/
+dist/
+wheels/
+*.whl
+.eggs/
+pip-wheel-metadata/
+
+# --- Virtual environments ---
+.venv
+.venv-*
+venv/
+env/
+ENV/
+
+# --- Caches ---
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.cache/
+
+# --- Editor / IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# --- OS ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- mcpolish runtime ---
+# LLM verdict cache (per-user, regenerated on demand)
+.mcpolish-cache.sqlite
+*.mcpolish.db
+# Reports written to disk during local runs
+*.sarif
+codequality.json
+mcpolish-report.json
+badge.svg
+mcpolish_badge.svg
+# Ad-hoc local scratch
+/tmp/
+scratch/

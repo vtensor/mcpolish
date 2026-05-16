@@ -1,0 +1,5 @@
+[project]
+name = "config-empty-section"
+version = "0.0.0"
+
+[tool.mcpolish]

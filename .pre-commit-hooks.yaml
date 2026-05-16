@@ -1,0 +1,8 @@
+- id: mcpolish
+  name: mcpolish
+  description: Fast static linter for MCP servers
+  entry: mcpolish lint
+  language: python
+  types: [python]
+  pass_filenames: true
+  require_serial: true

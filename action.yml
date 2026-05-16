@@ -1,0 +1,62 @@
+name: mcpolish
+description: Lint MCP server tool descriptions with mcpolish.
+branding:
+  icon: zap
+  color: blue
+
+inputs:
+  path:
+    description: Directory or file to lint.
+    required: false
+    default: "."
+  fail-on:
+    description: Severity that fails the build (error | warn | note | never).
+    required: false
+    default: error
+  report:
+    description: Report format (tty | json | sarif | gitlab | pr-comment).
+    required: false
+    default: tty
+  select:
+    description: Comma-separated rule IDs to include (e.g. MP010,MP012).
+    required: false
+    default: ""
+  ignore:
+    description: Comma-separated rule IDs to exclude.
+    required: false
+    default: ""
+  output:
+    description: File to write the report to. Stdout by default.
+    required: false
+    default: ""
+
+outputs:
+  score:
+    description: Final mcpolish score (0-100).
+    value: ${{ steps.run.outputs.score }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install mcpolish
+      shell: bash
+      run: pip install mcpolish
+    - name: Run mcpolish
+      id: run
+      shell: bash
+      run: |
+        ARGS=()
+        for rule in $(echo "${{ inputs.select }}" | tr ',' ' '); do
+          if [ -n "$rule" ]; then ARGS+=(--select "$rule"); fi
+        done
+        for rule in $(echo "${{ inputs.ignore }}" | tr ',' ' '); do
+          if [ -n "$rule" ]; then ARGS+=(--ignore "$rule"); fi
+        done
+        OUT="${{ inputs.output }}"
+        if [ -n "$OUT" ]; then
+          mcpolish lint "${{ inputs.path }}" --format "${{ inputs.report }}" --fail-on "${{ inputs.fail-on }}" "${ARGS[@]}" > "$OUT"
+        else
+          mcpolish lint "${{ inputs.path }}" --format "${{ inputs.report }}" --fail-on "${{ inputs.fail-on }}" "${ARGS[@]}"
+        fi
+        SCORE=$(mcpolish score "${{ inputs.path }}")
+        echo "score=$SCORE" >> "$GITHUB_OUTPUT"

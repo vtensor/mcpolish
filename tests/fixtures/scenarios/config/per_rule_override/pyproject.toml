@@ -1,0 +1,8 @@
+[project]
+name = "config-per-rule"
+version = "0.0.0"
+
+[tool.mcpolish]
+
+[tool.mcpolish.MP010]
+allow = ["search"]

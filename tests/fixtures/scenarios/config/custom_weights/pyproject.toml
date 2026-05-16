@@ -1,0 +1,12 @@
+[project]
+name = "config-custom-weights"
+version = "0.0.0"
+
+[tool.mcpolish]
+
+[tool.mcpolish.score_weights]
+schema = 0.1
+naming = 0.1
+description = 0.1
+consistency = 0.1
+security = 0.6
