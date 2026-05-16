@@ -1,0 +1,148 @@
+name: publish
+
+# Fires when you push a version tag like v0.1.0.
+# Build runs first without approval. Publish waits for the required reviewer
+# on the `pypi` environment.
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish (e.g. v0.1.0). Used only for manual dispatch.'
+        required: false
+
+permissions: {}
+
+jobs:
+  # ----- 1. Build the wheel + sdist, verify metadata. No secrets needed. -----
+  build:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build twine
+
+      - name: Confirm tag matches package version
+        id: version
+        run: |
+          set -e
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          if [ -z "$TAG_NAME" ] || [ "$TAG_NAME" = "$GITHUB_REF" ]; then
+            TAG_NAME="${{ inputs.tag }}"
+          fi
+          TAG_VERSION="${TAG_NAME#v}"
+          PKG_VERSION=$(python -c "import tomllib,sys; print(tomllib.loads(open('pyproject.toml','rb').read().decode())['project']['version'])")
+          echo "tag=$TAG_NAME"
+          echo "tag_version=$TAG_VERSION"
+          echo "pyproject_version=$PKG_VERSION"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::tag $TAG_NAME ($TAG_VERSION) does not match pyproject version $PKG_VERSION"
+            exit 1
+          fi
+          echo "version=$PKG_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build sdist and wheel
+        run: python -m build
+
+      - name: Verify metadata with twine
+        run: twine check --strict dist/*
+
+      - name: Install built wheel and smoke-test the CLI
+        run: |
+          python -m venv /tmp/smoke
+          /tmp/smoke/bin/pip install --upgrade pip
+          /tmp/smoke/bin/pip install dist/*.whl
+          /tmp/smoke/bin/mcpolish --version
+          /tmp/smoke/bin/mcpolish doctor
+
+      - name: Show what will be uploaded
+        run: |
+          echo "==== Files to publish ===="
+          ls -la dist/
+          echo "==== Wheel contents ===="
+          unzip -l dist/*.whl | head -50
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  # ----- 2. Publish to PyPI. Gated by the `pypi` environment's required reviewer. -----
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/mcpolish/${{ needs.build.outputs.version }}/
+    permissions:
+      id-token: write  # required for PyPI Trusted Publishing (OIDC)
+    timeout-minutes: 15
+
+    steps:
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: List artifacts under review
+        run: |
+          echo "Reviewer is approving publication of mcpolish ${{ needs.build.outputs.version }}"
+          ls -la dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          print-hash: true
+
+  # ----- 3. Verify the upload landed and is installable. -----
+  verify:
+    name: Verify install from PyPI
+    needs: [build, publish]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Wait for PyPI index to settle
+        run: sleep 30
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install from PyPI
+        run: |
+          python -m venv /tmp/verify
+          /tmp/verify/bin/pip install --upgrade pip
+          /tmp/verify/bin/pip install "mcpolish==${{ needs.build.outputs.version }}"
+          /tmp/verify/bin/mcpolish --version
+          /tmp/verify/bin/mcpolish doctor
+
+      - name: Summary
+        run: |
+          echo "## Published mcpolish ${{ needs.build.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Available at: https://pypi.org/project/mcpolish/${{ needs.build.outputs.version }}/" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Install with: \`pip install mcpolish==${{ needs.build.outputs.version }}\`" >> "$GITHUB_STEP_SUMMARY"
