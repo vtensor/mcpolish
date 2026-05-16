@@ -11,20 +11,20 @@ Catch vague, colliding, or misleading tool descriptions before agents pick the w
 </p>
 
 <p align="center">
-| <a href="docs/index.md"><b>Documentation</b></a> |
-<a href="docs/getting-started/quickstart.md"><b>Quickstart</b></a> |
-<a href="docs/rules/index.md"><b>Rules</b></a> |
-<a href="docs/concepts/glossary.md"><b>Glossary</b></a> |
-<a href="MCPOLISH.md"><b>Design doc</b></a> |
-<a href="VERIFICATION.md"><b>Test report</b></a> |
+| <a href="https://github.com/vtensor/mcpolish/blob/main/docs/index.md"><b>Documentation</b></a> |
+<a href="https://github.com/vtensor/mcpolish/blob/main/docs/getting-started/quickstart.md"><b>Quickstart</b></a> |
+<a href="https://github.com/vtensor/mcpolish/blob/main/docs/rules/index.md"><b>Rules</b></a> |
+<a href="https://github.com/vtensor/mcpolish/blob/main/docs/concepts/glossary.md"><b>Glossary</b></a> |
+<a href="https://github.com/vtensor/mcpolish/blob/main/MCPOLISH.md"><b>Design doc</b></a> |
+<a href="https://github.com/vtensor/mcpolish/blob/main/VERIFICATION.md"><b>Test report</b></a> |
 </p>
 
 <p align="center">
   <a href="https://pypi.org/project/mcpolish/"><img src="https://img.shields.io/badge/pypi-mcpolish-blue.svg" alt="pypi"></a>
   <a href="https://pypi.org/project/mcpolish/"><img src="https://img.shields.io/badge/python-3.11%2B-blue.svg" alt="python"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-lightgrey.svg" alt="license"></a>
-  <a href="docs/rules/index.md"><img src="https://img.shields.io/badge/rules-23-brightgreen.svg" alt="rules"></a>
-  <a href="VERIFICATION.md"><img src="https://img.shields.io/badge/tests-132%20passing-brightgreen.svg" alt="tests"></a>
+  <a href="https://github.com/vtensor/mcpolish/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-lightgrey.svg" alt="license"></a>
+  <a href="https://github.com/vtensor/mcpolish/blob/main/docs/rules/index.md"><img src="https://img.shields.io/badge/rules-23-brightgreen.svg" alt="rules"></a>
+  <a href="https://github.com/vtensor/mcpolish/blob/main/VERIFICATION.md"><img src="https://img.shields.io/badge/tests-132%20passing-brightgreen.svg" alt="tests"></a>
 </p>
 
 ---
@@ -58,7 +58,7 @@ mcpolish covers:
 - Consistency between schema and description (param type mismatch, undocumented side effects, duplicate descriptions).
 - Security smells (zero-width prompt injection, operator-style instructions baked into descriptions).
 
-See the [rules index](docs/rules/index.md) for the full table.
+See the [rules index](https://github.com/vtensor/mcpolish/blob/main/docs/rules/index.md) for the full table.
 
 ## Quickstart
 
@@ -89,18 +89,18 @@ Found 2 issues (0 errors, 2 warnings, 0 notes). score: 86/100
 
 ## Documentation
 
-The full documentation lives under [docs/](docs/index.md). Common entry points:
+The full documentation lives under [docs/](https://github.com/vtensor/mcpolish/blob/main/docs/index.md). Common entry points:
 
 | If you want to... | Go here |
 |---|---|
-| Run mcpolish for the first time | [Quickstart](docs/getting-started/quickstart.md) |
-| Understand the diagnostic lines | [Understanding the output](docs/getting-started/understanding-output.md) |
-| Wire mcpolish into CI | [GitHub Actions](docs/scenarios/ci-github.md), [GitLab CI](docs/scenarios/ci-gitlab.md), [pre-commit](docs/scenarios/pre-commit-setup.md) |
-| Lint a multi-file project | [Multi-file server](docs/scenarios/multi-file-server.md) |
-| Customise which rules run | [Customising rules](docs/scenarios/customizing-rules.md) |
-| Look up one specific rule | [Rules index](docs/rules/index.md) |
-| Find what a technical word means | [Glossary](docs/concepts/glossary.md) |
-| Use the Python API | [Python API](docs/usage/python-api.md) |
+| Run mcpolish for the first time | [Quickstart](https://github.com/vtensor/mcpolish/blob/main/docs/getting-started/quickstart.md) |
+| Understand the diagnostic lines | [Understanding the output](https://github.com/vtensor/mcpolish/blob/main/docs/getting-started/understanding-output.md) |
+| Wire mcpolish into CI | [GitHub Actions](https://github.com/vtensor/mcpolish/blob/main/docs/scenarios/ci-github.md), [GitLab CI](https://github.com/vtensor/mcpolish/blob/main/docs/scenarios/ci-gitlab.md), [pre-commit](https://github.com/vtensor/mcpolish/blob/main/docs/scenarios/pre-commit-setup.md) |
+| Lint a multi-file project | [Multi-file server](https://github.com/vtensor/mcpolish/blob/main/docs/scenarios/multi-file-server.md) |
+| Customise which rules run | [Customising rules](https://github.com/vtensor/mcpolish/blob/main/docs/scenarios/customizing-rules.md) |
+| Look up one specific rule | [Rules index](https://github.com/vtensor/mcpolish/blob/main/docs/rules/index.md) |
+| Find what a technical word means | [Glossary](https://github.com/vtensor/mcpolish/blob/main/docs/concepts/glossary.md) |
+| Use the Python API | [Python API](https://github.com/vtensor/mcpolish/blob/main/docs/usage/python-api.md) |
 
 ## The 23 rules
 
@@ -121,7 +121,7 @@ mcpolish explain          # one line per rule
 mcpolish explain MP010    # details for one rule
 ```
 
-See the [rules index](docs/rules/index.md) for the categorised table and links to every rule's detail page.
+See the [rules index](https://github.com/vtensor/mcpolish/blob/main/docs/rules/index.md) for the categorised table and links to every rule's detail page.
 
 ## Configuration
 
@@ -141,7 +141,7 @@ allow = ["search"]
 min_chars = 80
 ```
 
-See [Configuration](docs/usage/configuration.md) for every knob.
+See [Configuration](https://github.com/vtensor/mcpolish/blob/main/docs/usage/configuration.md) for every knob.
 
 ## Integrations
 
@@ -196,7 +196,7 @@ mcpolish explain MP010
 mcpolish doctor
 ```
 
-Full reference: [CLI reference](docs/usage/cli-reference.md).
+Full reference: [CLI reference](https://github.com/vtensor/mcpolish/blob/main/docs/usage/cli-reference.md).
 
 ## Python API
 
@@ -210,7 +210,7 @@ for d in report.diagnostics:
     print(d.rule_id, d.location(), d.message)
 ```
 
-See [Python API](docs/usage/python-api.md).
+See [Python API](https://github.com/vtensor/mcpolish/blob/main/docs/usage/python-api.md).
 
 ## Why this exists
 
@@ -233,14 +233,14 @@ The ecosystem grew to over 23,000 servers on Glama, 20,000 on MCP.so, and 12,000
 | License | Apache 2.0 |
 | Status | Beta. The 23 rule IDs are stable forever. |
 
-See [MCPOLISH.md](MCPOLISH.md) for the full design document and [VERIFICATION.md](VERIFICATION.md) for the end-to-end verification report.
+See [MCPOLISH.md](https://github.com/vtensor/mcpolish/blob/main/MCPOLISH.md) for the full design document and [VERIFICATION.md](https://github.com/vtensor/mcpolish/blob/main/VERIFICATION.md) for the end-to-end verification report.
 
 ## Contributing
 
 Contributions are welcome. Bug reports, rule proposals, and documentation improvements are equally valued.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the developer setup and the workflow. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community expectations. See [SECURITY.md](SECURITY.md) to report a security issue privately.
+See [CONTRIBUTING.md](https://github.com/vtensor/mcpolish/blob/main/CONTRIBUTING.md) for the developer setup and the workflow. See [CODE_OF_CONDUCT.md](https://github.com/vtensor/mcpolish/blob/main/CODE_OF_CONDUCT.md) for community expectations. See [SECURITY.md](https://github.com/vtensor/mcpolish/blob/main/SECURITY.md) to report a security issue privately.
 
 ## License
 
-Apache 2.0. See [LICENSE](LICENSE).
+Apache 2.0. See [LICENSE](https://github.com/vtensor/mcpolish/blob/main/LICENSE).

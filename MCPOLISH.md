@@ -1,4 +1,4 @@
-# MCPOLISH — Design Doc
+# MCPOLISH: Design Doc
 
 | | |
 |---|---|
@@ -13,7 +13,7 @@
 
 ## 1. TL;DR
 
-MCPolish is a fast static linter for MCP servers — like ESLint, but specialised for the Model Context Protocol's failure mode: **vague, colliding, or misleading tool descriptions that cause LLM agents to pick the wrong tool**.
+MCPolish is a fast static linter for MCP servers: like ESLint, but specialised for the Model Context Protocol's failure mode: **vague, colliding, or misleading tool descriptions that cause LLM agents to pick the wrong tool**.
 
 Wang et al. (NTU/UCLA, Feb 2026, [arXiv:2602.18914](https://arxiv.org/abs/2602.18914)) analysed **10,831 MCP servers** and found 73% have repeated tool names, 3,093 have no return-value description, and bad descriptions degrade tool-selection accuracy by **52 percentage points** in head-to-head choice (72% → 20% [1]). MCPolish ships **24 named lint rules** mapped directly to that paper's smell taxonomy, plus naming-collision detection and schema-vs-description consistency checks.
 
@@ -29,7 +29,7 @@ The one-line pitch: **the MCP ecosystem grew to 10,000+ servers with no quality 
 
 - **23K servers on Glama**, ~20K on MCP.so, ~12K on PulseMCP, ~7K on Smithery, plus the official Anthropic registry [2][3][4].
 - **97M monthly SDK downloads** combined across `@modelcontextprotocol/sdk` and Python `mcp` [5].
-- **Adoption is universal across major hosts**: Anthropic (donor), OpenAI (announced full MCP support March 2025, "we are excited to add support across our products" — Altman [6]), Google DeepMind, Cursor, Windsurf, Cline, Continue.dev, Zed, Replit, VS Code Copilot, Claude Code, Claude Desktop.
+- **Adoption is universal across major hosts**: Anthropic (donor), OpenAI (announced full MCP support March 2025, "we are excited to add support across our products": Altman [6]), Google DeepMind, Cursor, Windsurf, Cline, Continue.dev, Zed, Replit, VS Code Copilot, Claude Code, Claude Desktop.
 
 The ecosystem grew faster than its quality bar.
 
@@ -57,7 +57,7 @@ A companion paper (Zhihao Li et al. [arXiv:2602.03580](https://arxiv.org/abs/260
 | **MCP Inspector** (official) | Web UI for manual debugging | Manual only. Not CI. No quality rules. Had RCE CVE-2025-49596 [8]. |
 | **mcp-scan** (Snyk-acquired) | Security: prompt injection, tool poisoning, rug pulls, tool shadowing | Detects *malicious* descriptions, not *bad* ones. |
 | **MCPWatch** | OWASP MCP Top 10 + letter grade | Security grading, no DX/quality. Glama reports only 20.5% of 20,652 servers earn an A [3]. |
-| **Smithery quality score** | 0–100 grade driving registry rank | Closed criteria. Registry-bound. Not a CLI. Not actionable per-rule. |
+| **Smithery quality score** | 0-100 grade driving registry rank | Closed criteria. Registry-bound. Not a CLI. Not actionable per-rule. |
 | **Glama quality score** | 70% tool-quality × 30% server-coherence | Registry-side only. Post-publish. Closed methodology. |
 | **ToolRank** ("Lighthouse for MCP") | OSS scorer, 4 buckets, PR-comment Action | Closest competitor. Solo dev. 4 rules, no rule taxonomy. No commercial tier. Scores JSON only, not server source. |
 | **Anthropic / Python MCP SDKs** | Runtime JSON-Schema validation | Validates types, not English. |
@@ -74,7 +74,7 @@ That is the wedge.
 
 - The arXiv paper is **two months old**. Its 18-smell taxonomy is a defensible v1 ruleset and nobody has shipped a linter built on it.
 - **Snyk acquired Invariant Labs (mcp-scan)** in June 2025 [9]. Agentic-AI security is a budget line. MCP tooling has real M&A.
-- **MCP donated to Linux Foundation's Agentic AI Foundation (AAIF)** Dec 2025 — OpenAI, AWS, Google, Microsoft, Cloudflare, Bloomberg are members [10]. The ecosystem now has institutional money behind it.
+- **MCP donated to Linux Foundation's Agentic AI Foundation (AAIF)** Dec 2025: OpenAI, AWS, Google, Microsoft, Cloudflare, Bloomberg are members [10]. The ecosystem now has institutional money behind it.
 
 ---
 
@@ -83,11 +83,11 @@ That is the wedge.
 ### 3.1 Goals (v1)
 
 1. **24 first-party lint rules** (full taxonomy below), every one mapped to a paper or known failure mode.
-2. **Sub-second scan** on a typical MCP server (1–20 tools). Zero LLM calls for core engine.
+2. **Sub-second scan** on a typical MCP server (1-20 tools). Zero LLM calls for core engine.
 3. **`--llm` flag for 4 semantic rules** (ambiguity, schema-vs-description drift, undocumented side effects, param-meaning mismatch). Optional, gated by API key.
 4. **Cross-server collision check** via a pinned registry snapshot (refreshed weekly), so `mcpolish lint` flags `your_tool_name` colliding with the top-1000 MCP servers' tools.
 5. **Five integration shapes**: PyPI library, CLI, pre-commit hook, GitHub Action, GitLab CI template.
-6. **Stable rule IDs**: `MP001`–`MP041` and beyond. Once shipped, never renumbered. (Ruff and Hadolint enforce this; users rely on it.)
+6. **Stable rule IDs**: `MP001`-`MP041` and beyond. Once shipped, never renumbered. (Ruff and Hadolint enforce this; users rely on it.)
 7. **Safe `--fix`** for ~8 rules where the fix is unambiguous (e.g. add missing description placeholder).
 8. **SaaS dashboard** for registry-wide scoring (Smithery/Glama partnership shape) and white-label badges.
 
@@ -112,14 +112,14 @@ That is the wedge.
 | Persona | Pain | Lever MCPolish pulls | Buys? |
 |---|---|---|---|
 | **MCP server author** (open-source dev) | Server gets low Smithery score, no idea why | CLI + pre-commit + actionable rule IDs | OSS user. Top of funnel. |
-| **MCP marketplace** (Smithery, Glama, PulseMCP, MCP.so) | Need quality bar, existing scores are opaque | White-label registry-wide scanning + badges + dashboards | **$30K–$150K/yr enterprise license** |
-| **Enterprise platform team** running internal MCP fleet | Agents pick wrong tool; can't audit which descriptions are at fault | CI gate + SSO dashboards + private rules | **$15K–$40K/yr Team / Enterprise** |
+| **MCP marketplace** (Smithery, Glama, PulseMCP, MCP.so) | Need quality bar, existing scores are opaque | White-label registry-wide scanning + badges + dashboards | **$30K-$150K/yr enterprise license** |
+| **Enterprise platform team** running internal MCP fleet | Agents pick wrong tool; can't audit which descriptions are at fault | CI gate + SSO dashboards + private rules | **$15K-$40K/yr Team / Enterprise** |
 | **AI safety / red-team vendor** | Need static-quality signal alongside security signal | API access for ingest into security suites | Channel partnerships |
 | **Foundation lab / AAIF / official registry** | Need ecosystem-health metric | Licensed dataset + per-server grades | **$100K+/yr** strategic deal |
 
 **Primary SaaS buyer**: the MCP marketplaces. They already run quality scores; they already have revenue tied to those scores; they need an explainable, defensible engine. White-labelling MCPolish is a faster path for them than maintaining their own.
 
-**Pricing comparables**: Snyk Team $25/dev/mo + Enterprise $5K–$70K/yr [11]. Code Climate Quality $49/user/mo [12]. SonarQube Enterprise $20K+/yr. ESLint is free — but every commercial linter (Snyk Code, SonarQube, Code Climate) has demonstrated WTP for a CI-shaped quality SaaS.
+**Pricing comparables**: Snyk Team $25/dev/mo + Enterprise $5K-$70K/yr [11]. Code Climate Quality $49/user/mo [12]. SonarQube Enterprise $20K+/yr. ESLint is free: but every commercial linter (Snyk Code, SonarQube, Code Climate) has demonstrated WTP for a CI-shaped quality SaaS.
 
 ---
 
@@ -190,7 +190,7 @@ memnex/server.py:65:5: MP020 [W] description shorter than 50 characters (32 char
 memnex/server.py:80:5: MP030 [E] param `limit` is typed `string` but description says "number of results"
   ──► see https://mcpolish.dev/rules/MP030
 
-Found 4 issues (2 errors, 2 warnings) — score: 78/100
+Found 4 issues (2 errors, 2 warnings): score: 78/100
 ```
 
 ### 6.3 Pre-commit hook
@@ -225,7 +225,7 @@ line-length = 100
 registry = "official"
 
 [tool.mcpolish.MP010]
-allow = ["search", "query"]         # per-rule config — your server's exceptions
+allow = ["search", "query"]         # per-rule config: your server's exceptions
 
 [tool.mcpolish.MP022]
 required-examples = 1               # at least 1 example per param
@@ -287,7 +287,7 @@ weights = { schema = 0.20, naming = 0.30, description = 0.30, consistency = 0.20
 └──────────────────────────────────────────────────────────────┘
 ```
 
-One parse, many rules — Ruff's pattern. The `ToolRegistry` IR is the choke point: every rule visits the same IR, so adding a rule is `O(1)` in parse cost.
+One parse, many rules: Ruff's pattern. The `ToolRegistry` IR is the choke point: every rule visits the same IR, so adding a rule is `O(1)` in parse cost.
 
 ---
 
@@ -332,7 +332,7 @@ mcpolish/
 └── src/mcpolish/
     ├── __init__.py
     ├── _version.py
-    ├── types.py                         # ToolRegistry, Diagnostic, Severity — Pydantic
+    ├── types.py                         # ToolRegistry, Diagnostic, Severity: Pydantic
     ├── exceptions.py
     ├── logging.py
     │
@@ -419,8 +419,8 @@ mcpolish/
     │   ├── main.py                      # entry point (Click)
     │   ├── lint.py                      # `mcpolish lint`
     │   ├── score.py                     # `mcpolish score`
-    │   ├── doctor.py                    # `mcpolish doctor` — config validation
-    │   ├── explain.py                   # `mcpolish explain MP010` — opens docs
+    │   ├── doctor.py                    # `mcpolish doctor`: config validation
+    │   ├── explain.py                   # `mcpolish explain MP010`: opens docs
     │   └── update.py                    # `mcpolish update-registry` (SaaS-only)
     │
     ├── config/
@@ -509,8 +509,8 @@ class Discoverer(Protocol):
 
 Two implementations in v1:
 
-- `python_ast.PythonDiscoverer` — uses `libcst` (not `ast`) for round-trippable parse + position info. Detects `@mcp.tool()`, `@server.tool()`, `Server.add_tool(...)`, `FastMCP.tool(...)`. Resolves description from docstrings or explicit kwargs. Parses `inputSchema=...` literal or Pydantic-derived schema.
-- `typescript.TSDiscoverer` — shells out to a vendored `ts-morph` Node helper (cached binary), extracts tool registrations from `server.tool({...})` calls.
+- `python_ast.PythonDiscoverer`: uses `libcst` (not `ast`) for round-trippable parse + position info. Detects `@mcp.tool()`, `@server.tool()`, `Server.add_tool(...)`, `FastMCP.tool(...)`. Resolves description from docstrings or explicit kwargs. Parses `inputSchema=...` literal or Pydantic-derived schema.
+- `typescript.TSDiscoverer`: shells out to a vendored `ts-morph` Node helper (cached binary), extracts tool registrations from `server.tool({...})` calls.
 
 Why libcst over ast: idempotent fix application requires position-preserving CST.
 
@@ -556,7 +556,7 @@ Every rule:
 - Reads `ctx.config` for per-rule overrides.
 - Is independently testable (pass it a `ToolRegistry`, assert diagnostics).
 
-### 9.4 `mcpolish.rules.naming.MP013` — cross-server collision
+### 9.4 `mcpolish.rules.naming.MP013`: cross-server collision
 
 The interesting one. Loads `registry/data/snapshot.v1.parquet`, builds an in-memory set of `(tool_name → [server_names])`, flags any tool whose name appears in the top-N (default 1000) of *other* servers in the snapshot.
 
@@ -573,7 +573,7 @@ Cache is also serialisable, so a team can ship a `.mcpolish-cache.sqlite` in CI 
 Two-level safety model (borrowed from Biome):
 
 - **Safe fix**: deterministic, semantics-preserving. Example: `MP002` adds an empty `description=""` kwarg to a tool definition where it was missing. Applied by `--fix`.
-- **Unsafe fix**: requires human review. Example: `MP011` renames `memnex_search_memory` → `search_memory` — that's an API change. Applied only with `--unsafe-fix`.
+- **Unsafe fix**: requires human review. Example: `MP011` renames `memnex_search_memory` → `search_memory`: that's an API change. Applied only with `--unsafe-fix`.
 
 Fix application uses libcst's mutator API for Python so formatting is preserved.
 
@@ -596,12 +596,12 @@ Score is the SaaS hook: badges, dashboards, and registry-side scoring all consum
 Click + Rich. `mcpolish lint`, `mcpolish score`, `mcpolish explain MP010`, `mcpolish doctor` (validate config), `mcpolish update-registry` (SaaS-only).
 
 Exit codes:
-- `0` — no errors (warnings okay)
-- `1` — at least one error
-- `2` — file/parse failure
-- `64` — usage error
-- `65` — config error
-- `70` — internal error
+- `0`: no errors (warnings okay)
+- `1`: at least one error
+- `2`: file/parse failure
+- `64`: usage error
+- `65`: config error
+- `70`: internal error
 
 ### 9.9 `mcpolish.report`
 
@@ -682,7 +682,7 @@ Optimisations:
 - Cross-server snapshot loaded once into a hash set.
 - LLM cache is content-addressed; identical descriptions never re-call.
 
-If sub-second slips on Python (libcst isn't as fast as Ruff's Rust parser), a Rust rewrite of `discover` is on the roadmap. Out of scope for v1 — Python is enough for the perf budget above.
+If sub-second slips on Python (libcst isn't as fast as Ruff's Rust parser), a Rust rewrite of `discover` is on the roadmap. Out of scope for v1: Python is enough for the perf budget above.
 
 ---
 
@@ -737,10 +737,10 @@ Every error is a typed subclass of `McpolishError`. No bare `except`. Rules are 
 - **`--registry` is opt-in for online refresh.** Default is bundled snapshot. `--registry online` fetches the latest from a CDN.
 - **No `eval()`-style dynamic dispatch.** Rule registration is import-time, not config-time.
 - **SaaS data plane**: TLS 1.3, AES-256 at rest, customer-managed KMS at Team tier and above.
-- **No prompt content stored.** SaaS keeps `(rule_id, severity, file, line, col)` and aggregated metrics — never the description text from private servers. Aggregate-only collision detection.
+- **No prompt content stored.** SaaS keeps `(rule_id, severity, file, line, col)` and aggregated metrics: never the description text from private servers. Aggregate-only collision detection.
 - **SOC2 Type II** by month 9 of SaaS launch.
 
-The security surface is *much smaller* than mcp-scan's because we're static — no runtime sandbox to escape, no remote-tool-execution attack surface.
+The security surface is *much smaller* than mcp-scan's because we're static: no runtime sandbox to escape, no remote-tool-execution attack surface.
 
 ---
 
@@ -761,7 +761,7 @@ Anchored against Snyk Team ($25/dev/mo), Code Climate ($49/user/mo), SonarQube E
 ### 15.2 GTM motion
 
 1. **OSS first.** Ship the 24 rules + GitHub Action + a documentation site with one page per rule citing the Wang/Li papers. Submit to MCP Discord, /r/LocalLLaMA, the AAIF working group.
-2. **Land one MCP marketplace as design partner.** Smithery is most likely — their public quality score is opaque and they have direct economic incentive to outsource the engine. Free / discounted in exchange for case study.
+2. **Land one MCP marketplace as design partner.** Smithery is most likely: their public quality score is opaque and they have direct economic incentive to outsource the engine. Free / discounted in exchange for case study.
 3. **Convert marketplace partnership into co-marketing.** Smithery-badge → "scored by MCPolish" links → top-of-funnel for MCPolish OSS.
 4. **Enterprise wedge**: financial-services / defence teams running internal MCP fleets. Compliance + audit-trail story.
 5. **Conference / blog presence.** AAIF working-group meetings, MCP Devs Day, Anthropic Builders summit. Publish "State of MCP Server Quality" annual report from the SaaS dataset. That report is itself a content asset.
@@ -772,7 +772,7 @@ Anchored against Snyk Team ($25/dev/mo), Code Climate ($49/user/mo), SonarQube E
 - **Stable rule IDs.** Sticky in users' `noqa`-equivalent comments.
 - **Cross-server collision dataset.** Compounds weekly.
 - **Marketplace partnerships.** Once one major registry rebrands MCPolish as their engine, second is easier (network effect).
-- **Time-series quality dataset.** "Servers that scored < 60 last year had 2.3× the GitHub-issue rate" — that's a publishable claim.
+- **Time-series quality dataset.** "Servers that scored < 60 last year had 2.3× the GitHub-issue rate": that's a publishable claim.
 
 ---
 
@@ -780,11 +780,11 @@ Anchored against Snyk Team ($25/dev/mo), Code Climate ($49/user/mo), SonarQube E
 
 | Phase | Scope | Duration |
 |---|---|---|
-| **M0 — Foundation** | Repo scaffold, `discover` (Python), `types`, MP001–MP005 (schema rules), MP010–MP012 (naming), `report.tty`, `report.json`, CLI `lint`. | 4 weeks |
-| **M1 — Full Ruleset** | All 24 rules including LLM-gated four, `--fix` for 8 safe rules, MP013 cross-server with bundled snapshot, GitHub Action, pre-commit hook. | 4 weeks |
-| **M2 — TypeScript Support** | `discover/typescript.py` (ts-morph subprocess), TS test fixtures, docs site go-live, `mcpolish explain` command. | 3 weeks |
-| **M3 — SaaS MVP** | Registry crawler, weekly scan, dashboards (Next.js), auth (Clerk), Stripe billing, first marketplace partner. | 8 weeks |
-| **M4 — Compliance + Marketplace GA** | SOC2 prep, white-label badge API, second marketplace partner, public launch. | 8 weeks |
+| **M0: Foundation** | Repo scaffold, `discover` (Python), `types`, MP001-MP005 (schema rules), MP010-MP012 (naming), `report.tty`, `report.json`, CLI `lint`. | 4 weeks |
+| **M1: Full Ruleset** | All 24 rules including LLM-gated four, `--fix` for 8 safe rules, MP013 cross-server with bundled snapshot, GitHub Action, pre-commit hook. | 4 weeks |
+| **M2: TypeScript Support** | `discover/typescript.py` (ts-morph subprocess), TS test fixtures, docs site go-live, `mcpolish explain` command. | 3 weeks |
+| **M3: SaaS MVP** | Registry crawler, weekly scan, dashboards (Next.js), auth (Clerk), Stripe billing, first marketplace partner. | 8 weeks |
+| **M4: Compliance + Marketplace GA** | SOC2 prep, white-label badge API, second marketplace partner, public launch. | 8 weeks |
 
 Total to GA: ~27 weeks. Two-person team. Founder + one senior backend.
 
@@ -792,11 +792,11 @@ Total to GA: ~27 weeks. Two-person team. Founder + one senior backend.
 
 ## 17. SOLID + Engineering Principles Applied
 
-- **S — Single Responsibility.** `discover` parses, `rules` checks, `fix` mutates, `score` aggregates, `report` formats, `cli` presents. No module owns two of those.
-- **O — Open/Closed.** Adding a new rule = one new file in `rules/{category}/`. Adding a new report format = one new file in `report/`. Adding a new language = one new `Discoverer`. Zero edits to existing code.
-- **L — Liskov.** `Discoverer`, `Rule`, `Reporter`, `Fix` are all Protocols. Implementations are swappable.
-- **I — Interface segregation.** No god-class `MCPolish`. The CLI imports `lint()` and `score()`. Library users import `Rule` and `Diagnostic`. No fat base classes.
-- **D — Dependency inversion.** `cli → lint → rules → discover → types`. Never up.
+- **S: Single Responsibility.** `discover` parses, `rules` checks, `fix` mutates, `score` aggregates, `report` formats, `cli` presents. No module owns two of those.
+- **O: Open/Closed.** Adding a new rule = one new file in `rules/{category}/`. Adding a new report format = one new file in `report/`. Adding a new language = one new `Discoverer`. Zero edits to existing code.
+- **L: Liskov.** `Discoverer`, `Rule`, `Reporter`, `Fix` are all Protocols. Implementations are swappable.
+- **I: Interface segregation.** No god-class `MCPolish`. The CLI imports `lint()` and `score()`. Library users import `Rule` and `Diagnostic`. No fat base classes.
+- **D: Dependency inversion.** `cli → lint → rules → discover → types`. Never up.
 
 Other practices:
 - **Stable rule IDs forever.** Like Ruff, like ESLint. `MP010` means one thing for the life of the project.
@@ -809,7 +809,7 @@ Other practices:
 
 ## 18. Open Questions
 
-1. **First-class TypeScript support in v1?** Decision tree: most MCP servers are TypeScript, but Python tooling is faster to ship. Plan: Python in M0–M1, TypeScript in M2. Risk: if a TypeScript MCP marketplace partner lands first, accelerate.
+1. **First-class TypeScript support in v1?** Decision tree: most MCP servers are TypeScript, but Python tooling is faster to ship. Plan: Python in M0-M1, TypeScript in M2. Risk: if a TypeScript MCP marketplace partner lands first, accelerate.
 2. **Plugin system?** Postpone past v1. Like Ruff, ship a strong first-party rule set; pluginise only after community pressure.
 3. **Single binary vs Python?** Python for v1 (faster to ship). Reconsider Rust rewrite of `discover` + `rules` core if perf budget slips on large monorepos. Likely v2.
 4. **MCP version targeting.** MCP spec versions (2024-11, 2025-03, 2025-11) have breaking changes. Need `target-version` config and per-version rule activation.

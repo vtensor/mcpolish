@@ -102,19 +102,19 @@ nav:
       - Python API: usage/python-api.md
   - Rules:
       - Overview: rules/index.md
-      - Schema (MP001 — MP005):
+      - "Schema (MP001 to MP005)":
           - "MP001 require-tool-description": rules/MP001.md
           - "MP002 require-param-description": rules/MP002.md
           - "MP003 require-return-schema": rules/MP003.md
           - "MP004 require-required-array": rules/MP004.md
           - "MP005 valid-json-schema": rules/MP005.md
-      - Naming (MP010 — MP014):
+      - "Naming (MP010 to MP014)":
           - "MP010 generic-tool-name": rules/MP010.md
           - "MP011 redundant-prefix": rules/MP011.md
           - "MP012 inconsistent-verb-pattern": rules/MP012.md
           - "MP013 name-collision-cross-server": rules/MP013.md
           - "MP014 snake-vs-camel": rules/MP014.md
-      - Description (MP020 — MP026):
+      - "Description (MP020 to MP026)":
           - "MP020 description-too-short": rules/MP020.md
           - "MP021 description-too-long": rules/MP021.md
           - "MP022 missing-example": rules/MP022.md
@@ -122,12 +122,12 @@ nav:
           - "MP024 jargon-density": rules/MP024.md
           - "MP025 useless-qualifier": rules/MP025.md
           - "MP026 ambiguous-description": rules/MP026.md
-      - Consistency (MP030 — MP033):
+      - "Consistency (MP030 to MP033)":
           - "MP030 param-type-mismatch": rules/MP030.md
           - "MP031 param-meaning-mismatch": rules/MP031.md
           - "MP032 undocumented-side-effect": rules/MP032.md
           - "MP033 duplicate-tool-description": rules/MP033.md
-      - Security (MP040 — MP041):
+      - "Security (MP040 to MP041)":
           - "MP040 hidden-prompt-injection": rules/MP040.md
           - "MP041 instruction-in-description": rules/MP041.md
   - Scenarios:

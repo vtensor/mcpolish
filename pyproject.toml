@@ -1,7 +1,7 @@
 [project]
 name = "mcpolish"
 version = "0.1.0"
-description = "Fast static linter for MCP servers — catch vague, colliding, or misleading tool descriptions before agents pick the wrong tool."
+description = "Fast static linter for MCP servers. Catches vague, colliding, or misleading tool descriptions before agents pick the wrong tool."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
