@@ -1,0 +1,155 @@
+site_name: mcpolish
+site_description: Static linter for MCP server source code. Catches the description smells that make agents pick the wrong tool.
+site_url: https://www.melonai.in/docs/mcpolish/
+site_author: Vikram Dev
+
+repo_name: vtensor/mcpolish
+repo_url: https://github.com/vtensor/mcpolish
+edit_uri: edit/main/docs/
+
+copyright: Copyright &copy; 2026 Vikram Dev
+
+use_directory_urls: true
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: green
+      accent: green
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: green
+      accent: green
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Get started:
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+      - Your first lint: getting-started/your-first-lint.md
+      - Understanding the output: getting-started/understanding-output.md
+  - Concepts:
+      - What is MCP: concepts/what-is-mcp.md
+      - What is a linter: concepts/what-is-a-linter.md
+      - What mcpolish checks: concepts/what-mcpolish-checks.md
+      - The rule system: concepts/the-rule-system.md
+      - How scoring works: concepts/how-scoring-works.md
+      - Glossary: concepts/glossary.md
+  - Usage:
+      - CLI reference: usage/cli-reference.md
+      - Configuration: usage/configuration.md
+      - Autofix: usage/autofix.md
+      - Output formats: usage/output-formats.md
+      - LLM rules: usage/llm-rules.md
+      - Python API: usage/python-api.md
+  - Rules:
+      - Overview: rules/index.md
+      - Schema (MP001 — MP005):
+          - "MP001 require-tool-description": rules/MP001.md
+          - "MP002 require-param-description": rules/MP002.md
+          - "MP003 require-return-schema": rules/MP003.md
+          - "MP004 require-required-array": rules/MP004.md
+          - "MP005 valid-json-schema": rules/MP005.md
+      - Naming (MP010 — MP014):
+          - "MP010 generic-tool-name": rules/MP010.md
+          - "MP011 redundant-prefix": rules/MP011.md
+          - "MP012 inconsistent-verb-pattern": rules/MP012.md
+          - "MP013 name-collision-cross-server": rules/MP013.md
+          - "MP014 snake-vs-camel": rules/MP014.md
+      - Description (MP020 — MP026):
+          - "MP020 description-too-short": rules/MP020.md
+          - "MP021 description-too-long": rules/MP021.md
+          - "MP022 missing-example": rules/MP022.md
+          - "MP023 no-trigger-condition": rules/MP023.md
+          - "MP024 jargon-density": rules/MP024.md
+          - "MP025 useless-qualifier": rules/MP025.md
+          - "MP026 ambiguous-description": rules/MP026.md
+      - Consistency (MP030 — MP033):
+          - "MP030 param-type-mismatch": rules/MP030.md
+          - "MP031 param-meaning-mismatch": rules/MP031.md
+          - "MP032 undocumented-side-effect": rules/MP032.md
+          - "MP033 duplicate-tool-description": rules/MP033.md
+      - Security (MP040 — MP041):
+          - "MP040 hidden-prompt-injection": rules/MP040.md
+          - "MP041 instruction-in-description": rules/MP041.md
+  - Scenarios:
+      - New project: scenarios/new-project.md
+      - Existing project: scenarios/existing-project.md
+      - Single-file server: scenarios/single-file-server.md
+      - Multi-file server: scenarios/multi-file-server.md
+      - Tool-constructor server: scenarios/tool-constructor-server.md
+      - Huge monorepo: scenarios/huge-monorepo.md
+      - Enterprise fleet: scenarios/enterprise-fleet.md
+      - Customizing rules: scenarios/customizing-rules.md
+      - Silencing false positives: scenarios/silencing-false-positives.md
+      - Pre-commit setup: scenarios/pre-commit-setup.md
+      - CI on GitHub: scenarios/ci-github.md
+      - CI on GitLab: scenarios/ci-gitlab.md
+  - Methodology: methodology.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/vtensor/mcpolish
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/mcpolish/
+    - icon: fontawesome/solid/globe
+      link: https://www.melonai.in
